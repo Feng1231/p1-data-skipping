@@ -168,6 +168,22 @@ When storage is cheap, the ideal index stores exact counts for **all** values in
     └── generate_all.py    # Generate all test cases
 ```
 
+## Submission
+
+```bash
+cd code
+make submit
+```
+
+This cleans all generated data, build artifacts, and creates `submission.zip` in the project root.
+
+Then submit `submission.zip` to **Web Learning** (网络学堂).
+
+> **Note for Windows users:**
+> The `zip` command is not available on Windows by default. You may need to pack the files into `submission.zip` manually.
+
+If you have any questions, you may ask them in the WeChat group or Web Learning.
+
 ## Acknowledgments
 
 This assignment is adapted from the [TUMuchData Coding Challenge 2025](https://github.com/tumuchdata/coding-challenge-2025-cpp). Thanks to [TUMuchData](http://tumuchdata.club) for the excellent problem framework.

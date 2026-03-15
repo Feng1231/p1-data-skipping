@@ -26,6 +26,13 @@ run_all: build
 generate_data:
 	cd ../data && pip install numpy && python generate_all.py eval.json
 
+submit: clean
+	rm -f ../data/frequent.* ../data/normal.* ../data/*.data ../data/*.query
+	rm -rf ../data/.venv
+	cd .. && zip -r submission.zip . -x ".git/*" "*.dSYM/*" "*.zip"
+	@echo "Created submission.zip — submit to Web Learning."
+
 clean:
 	rm -f *.out
-.PHONY: clean run_frequent run_normal run_all generate_data
+	rm -rf *.dSYM
+.PHONY: clean run_frequent run_normal run_all generate_data submit
