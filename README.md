@@ -75,7 +75,6 @@ Both test cases use 512 data blocks × 131,072 unsigned 32-bit integers each, wi
 **Step 1.** Generate test data (requires Python + NumPy):
 
 ```bash
-cd code
 make generate_data
 ```
 
@@ -84,7 +83,6 @@ make generate_data
 **Step 3.** Build and evaluate:
 
 ```bash
-cd code
 make run_all
 ```
 
@@ -156,9 +154,9 @@ When storage is cheap, the ideal index stores exact counts for **all** values in
 ```
 .
 ├── README.md              # This file
+├── Makefile               # Build, run, submit targets
 ├── code/
 │   ├── User.hpp           # ★ The file you need to modify
-│   ├── Makefile           # Build & run targets
 │   ├── main.cpp           # Evaluation harness
 │   ├── Parameters.hpp     # Config (f_a, f_s)
 │   └── FileUtils.hpp      # File I/O
@@ -171,7 +169,6 @@ When storage is cheap, the ideal index stores exact counts for **all** values in
 ## Submission
 
 ```bash
-cd code
 make submit
 ```
 
