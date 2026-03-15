@@ -1,0 +1,9 @@
+# Executable
+code/main.out
+
+# Python virtual environment
+data/.venv/
+
+# Generated evaluation data (large binary files)
+data/frequent.*
+data/normal.**.dSYM

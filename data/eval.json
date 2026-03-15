@@ -1,0 +1,20 @@
+[
+    {
+        "name": "frequent",
+        "seed": 4762,
+        "num_chunks": 512,
+        "chunk_size": 131072,
+        "num_queries": 512,
+        "f_a": 3,
+        "f_s": 1
+    },
+    {
+        "name": "normal",
+        "seed": 82761737,
+        "num_chunks": 512,
+        "chunk_size": 131072,
+        "num_queries": 512,
+        "f_a": 1,
+        "f_s": 5
+    }
+]
