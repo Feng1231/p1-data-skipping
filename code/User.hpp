@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <cassert>
 #include <cstring> 
+#include <unordered_map>
+#include <algorithm>
 
 #include "Parameters.hpp"
 
@@ -15,7 +17,7 @@ struct MinMax {
 uint32_t hash1(uint32_t x) { return x * 2654435761u; }
 uint32_t hash2(uint32_t x) { return (x ^ 0xdeadbeef) * 1597334677u; }
 
-std::vector<std::byte> build_idx(std::span<const uint32_t> data, Parameters config){
+std::vector<std::byte> build_idx(std::span<const uint32_t> data, Parameters config) {
     MinMax mm{UINT32_MAX, 0};
     for (auto v : data) {
         if (v < mm.min) mm.min = v;
