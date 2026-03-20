@@ -13,18 +13,31 @@ struct MinMax {
 };
 
 std::vector<std::byte> build_idx(std::span<const uint32_t> data, Parameters config){
-    MinMax mm;
-    mm.min = UINT32_MAX;
-    mm.max = 0;
+    MinMax mm{UINT32_MAX, 0};
 
-    for (uint32_t v : data) {
+    for (auto v : data) {
         if (v < mm.min) mm.min = v;
         if (v > mm.max) mm.max = v;
     }
 
-    std::vector<std::byte> idx(sizeof(MinMax));
-    std::memcpy(idx.data(), &mm, sizeof(MinMax));
-    return idx;
+    size_t bloom_bits = (config.f_a > config.f_s) ? 8192 : 2048;
+    size_t bloom_bytes = bloom_bits / 8;
+
+    std::vector<std::byte> result(sizeof(MinMax) + bloom_bytes);
+    std::memcpy(result.data(), &mm, sizeof(MinMax));
+
+    uint8_t* bloom = reinterpret_cast<uint8_t*>(result.data() + sizeof(MinMax));
+
+    for (auto v : data) {
+        uint32_t h1 = hash1(v) % bloom_bits;
+        uint32_t h2 = hash2(v) % bloom_bits;
+
+        bloom[h1 / 8] |= (1 << (h1 % 8));
+        bloom[h2 / 8] |= (1 << (h2 % 8));
+    }
+
+    return result;
+    
 }
 
 std::optional<size_t> query_idx(uint32_t predicate, const std::vector<std::byte>& index){
