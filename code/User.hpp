@@ -11,6 +11,9 @@ struct MinMax {
     uint32_t min;
     uint32_t max;
 };
+// Hash functions suggested by chatGPT
+uint32_t hash1(uint32_t x) { return x * 2654435761u; }
+uint32_t hash2(uint32_t x) { return (x ^ 0xdeadbeef) * 1597334677u; }
 
 std::vector<std::byte> build_idx(std::span<const uint32_t> data, Parameters config){
     MinMax mm{UINT32_MAX, 0};
@@ -40,12 +43,24 @@ std::vector<std::byte> build_idx(std::span<const uint32_t> data, Parameters conf
     
 }
 
-std::optional<size_t> query_idx(uint32_t predicate, const std::vector<std::byte>& index){
+std::optional<size_t> query_idx(uint32_t predicate, const std::vector<std::byte>& index) {
     const MinMax* mm = reinterpret_cast<const MinMax*>(index.data());
 
     if (predicate < mm->min || predicate > mm->max) {
         return 0;
     }
+
+    size_t bloom_bits = (index.size() - sizeof(MinMax)) * 8;
+    const uint8_t* bloom = reinterpret_cast<const uint8_t*>(index.data() + sizeof(MinMax));
+
+    uint32_t h1 = hash1(predicate) % bloom_bits;
+    uint32_t h2 = hash2(predicate) % bloom_bits;
+
+    bool present =
+        (bloom[h1 / 8] & (1 << (h1 % 8))) &&
+        (bloom[h2 / 8] & (1 << (h2 % 8)));
+
+    if (!present) return 0;
 
     return std::nullopt;
 }
