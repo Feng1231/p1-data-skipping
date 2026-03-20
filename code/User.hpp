@@ -3,6 +3,7 @@
 #include <span>
 #include <cstdint>
 #include <cassert>
+#include <cstring> 
 
 #include "Parameters.hpp"
 
